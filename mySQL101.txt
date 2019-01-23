@@ -1,0 +1,59 @@
+/* SELECT = I want some records/rows */
+/* After the word select comes columns you wnant
+options: * = every available column */
+/* city = i want the city column only
+city, phone = I want the city and phone columns */
+-- After the columns comes the keyword FROM
+-- After column(s) comes the table yuou want to query
+/* employees, customers, etc */
+-- always end SQL statements with a ;
+SELECT * FROM employees;
+SELECT firstName, lastName FROM employees;
+-- If you only want certain rows, you can add a where after the table name
+SELECT firstName, lastName, extension FROM employees WHERE jobTitle = "Sales Rep";
+-- We can ask for "distinct" results
+SELECT DISTINCT(jobTitle) FROM employees;
+/* WHERE clauses can have multiple conditions. Use AND and OR */
+-- USE()
+SELECT * FROM orders WHERE status = "Cancelled" OR status = "Resolved";
+SELECT * FROM orders WHERE orderDate < "2004-01-01" AND orderDate > "2003-01-01";
+/* LIKE is basically an =  */
+SELECT * FROM productlines WHERE productLine LIKE "planes";
+-- The big advantage of LIKE is you can use % (or wildcards) inside your string
+SELECT * FROM employees WHERE lastName LIKE "%ur%";
+-- we want last names with "ur" in them and firstnames that start with "m"
+SELECT * FROM employees WHERE firstName LIKE "D%" AND lastName LIKE "%ur%";
+-- After the where clause, you can add order by
+-- ORDER by expects a column and a direction (asc,desc)
+SELECT * FROM offices;
+SELECT * FROM offices ORDER BY city asc;
+-- AFTER EVERYTHING, you can choose to limit the number of rows returned
+SELECT * FROM orderdetails;
+-- Get the top five orders;
+-- Limit takes 2 args: where to start and how many
+-- If you only provide one, it will start at 0
+SELECT * FROM orderdetails ORDER BY priceEach desc LIMIT 5;
+-- you can create a new "temp" column in your SELECT
+-- say we wanted a "orderTotal" column, we can make it!
+SELECT quantityOrdered * priceEach FROM orderdetails;
+SELECT *, quantityOrdered * priceEach FROM orderdetails;
+-- in order to alias, change the name of anything is the results, use AS
+SELECT *, quantityOrdered * priceEach AS orderTotal From orderdetails;
+-- order them from most expensive down
+SELECT *, quantityOrdered * priceEach AS orderTotal From orderdetails ORDER BY orderTotal desc;
+-- Get all employees with office code 1,2 or 3
+SELECT * FROM employees where officeCode IN (1,2,3);
+-- Math Functions from Excel are available as well
+SELECT SUM(quantityOrdered * priceEach) AS orderTotal From orderdetails ORDER BY orderTotal desc;
+SELECT AVG(quantityOrdered * priceEach) AS orderTotal From orderdetails ORDER BY orderTotal desc;
+-- Aggregate functions are things like SUM, AVG, etc. That grab a bunch of rows and melt them into one thing
+-- You cannot grab other columns unless you tell it how you want them 
+SELECT AVG(quantityOrdered * priceEach), orderNumber AS orderTotal From orderdetails ORDER BY orderTotal desc;
+
+-- EXERCISES--------------------------------------------------------------------------------------------------------------->
+SELECT * FROM employees WHERE jobTitle = 'Sales Rep';
+SELECT firstName, lastName, email FROM employees WHERE jobTitle != 'Sales Rep' AND officeCode = 1;
+SELECT * FROM employees WHERE jobTitle LIKE '%Manager%';
+SELECT * FROM employees WHERE firstname LIKE '%b%' AND officeCode IN(1,3,5) AND jobTitle LIKE '%manager%';
+SELECT customerName FROM customers LIMIT 0, 10;
+SELECT * FROM payments WHERE amount > 1000;
