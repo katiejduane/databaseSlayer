@@ -1,0 +1,39 @@
+-- SQL 201----------------------------------------------------------------------------------------------------------------->
+-- JOIN allows us to bring two tables together. JOIN makes table wider.
+-- UNION makes tables taller.
+SELECT * FROM payments 
+	JOIN customers ON payments.customerNumber = customers.customerNumber
+WHERE amount > 1000;
+
+-- get payments about 1k, with employee sales rep name
+SELECT payments.amount, customers.customerName, employees.firstName, employees.lastName FROM payments
+	INNER JOIN customers ON customers.customerNumber = payments.customerNumber
+	INNER JOIN employees ON customers.salesRepEmployeeNumber = employees.employeeNumber;
+	
+-- Select sales reps and their employees
+SELECT * FROM employees
+	INNER JOIN customers ON employees.employeeNumber = customers.salesRepEmployeeNumber;
+
+-- create a table within the database
+CREATE TABLE test (
+	id int(11),
+	name varchar(50),
+	job varchar(50),
+	salary int(6)
+);
+
+-- alter table to remove a particular column
+ALTER TABLE test DROP COLUMN salary;
+
+-- inserting rows is common! making databases less so; you won't insert them by hand, but you'll need to know how to write the query so nodeJS can
+-- add rows as needed (eg: a user signing up for a service)
+INSERT INTO test (id, name, job)
+	VALUES
+	(1, 'Rob', 'Teacher');
+
+-- UPDATE a record
+UPDATE test SET name = "Robert"
+WHERE name = "Rob";
+
+-- DELETE a record
+DELETE FROM test WHERE id = 1; 

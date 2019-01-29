@@ -25,4 +25,15 @@ router.get('/', function(req, res, next) {
   
 });
 
+router.get('/takeout',(reg, res)=>{
+    const takeOutQuery = 'SELECT * FROM restaurants WHERE doesTakeOut = 1;'
+    connection.query(takeOutQuery, (err, results)=>{
+        if (err) {
+            throw err; 
+        } else {
+            res.json(results)
+        }
+    })
+})
+
 module.exports = router;

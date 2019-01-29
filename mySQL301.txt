@@ -1,0 +1,43 @@
+-- mySQL301------------------------------------------------------->
+
+-- When you have an aggreage function (sum, average)
+-- and you want to group things togetehr, we use
+-- GROUP BY, provide the field that should make the gorup */
+
+-- 1. get the average stars by restaurant (restaurant name, average star rating)
+select * from restaurants as r
+	inner join reviews on r.id = reviews.restaurant_id;
+
+SELECT r.name, AVG(reviews.stars) FROM restaurants as r
+   INNER JOIN reviews ON r.id = reviews.restaurant_id
+   GROUP BY r.id;
+
+-- To discrimiate by group, use HAVING, not WHERE
+SELECT r.name, AVG(reviews.stars) AS avgReview FROM restaurants as r
+   INNER JOIN reviews ON r.id = reviews.restaurant_id
+   GROUP BY r.id HAVING avgReview > 3;
+
+SELECT r.name, AVG(reviews.stars) AS avgReview FROM restaurants as r
+   INNER JOIN reviews ON r.id = reviews.restaurant_id
+   WHERE reviews.stars > 4
+   GROUP BY r.id;	
+
+-- 3. get the lowest star rating for each user (user name, lowest star rating)
+-- for lowerst uses MIN() for highest use MAX()
+SELECT users.name, MIN(reviews.stars) as lowestStar FROM reviews
+	inner join users on reviews.author_id = users.id
+	GROUP BY users.id;
+	
+SELECT users.name, MIN(reviews.stars) as lowestStar, MIN(r.name) as restaurantName FROM reviews
+    INNER JOIN users ON reviews.author_id = users.id
+    INNER JOIN restaurants AS r ON r.id = reviews.restaurant_id
+    GROUP BY users.id;
+	
+-- 4. get the number of reviews by restaurant (restaurant name, review count)
+SELECT COUNT(r.id) as numReviews from reviews
+	INNER JOIN restaurants as r on reviews.restaurant_id = r.id
+	GROUP BY r.id;
+
+-- 5. get the number of restaurants in each category (category name, restaurant count)
+-- 6. get number of 5 star reviews by restaurant (restaurant name, 5-star count)
+-- 7. average star rating for a food category (category name, average star rating)
